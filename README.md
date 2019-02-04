@@ -1,4 +1,4 @@
-# Flutter Location Plugin
+# Flutter Location Plugin [![pub package](https://img.shields.io/pub/v/location.svg)](https://pub.dartlang.org/packages/location)
 
 This plugin for [Flutter](https://flutter.io)
 handles getting location on Android and iOS. It also provides callbacks when location is changed.
@@ -6,6 +6,9 @@ handles getting location on Android and iOS. It also provides callbacks when loc
 <p align="center">
   <img src="https://raw.githubusercontent.com/Lyokone/flutterlocation/master/src/demo_readme.gif" alt="Demo App" style="margin:auto" width="372" height="686">
 </p>
+
+# Breaking Changes
+As of the 1.4 version, you have to call `getLocation()` instead of just `getLocation` and `onLocationChanged()` instead of `onLocationChanged`.
 
 ## Getting Started
 
@@ -27,7 +30,7 @@ Then you just have to import the package with
 import 'package:location/location.dart';
 ```
 
-Look into the example for utilisation, but a basic implementation can be done like this for one time call :
+Look into the example for utilisation, but a basic implementation can be done like this for a one time location :
 ```dart
 var currentLocation = <String, double>{};
 
@@ -41,24 +44,29 @@ try {
 }
 ```
 
-You can also get continuous callbacks when your position is changing :
+You can also get continuous callbacks when your position is changing:
 ```dart
 var location = new Location();
 
-location.onLocationChanged.listen((Map<String,double> currentLocation) {
+location.onLocationChanged().listen((Map<String,double> currentLocation) {
   print(currentLocation["latitude"]);
   print(currentLocation["longitude"]);
   print(currentLocation["accuracy"]);
   print(currentLocation["altitude"]);
+  print(currentLocation["speed"]);
+  print(currentLocation["speed_accuracy"]); // Will always be 0 on iOS
 });
 ```
 
-If you want a one shot updated location :
-```dart
-var location = new Location();
+## API
+In this table you can find the different functions exposed by this plugin:
 
-Map<String,double> currentlocation = location.onLocationChanged.firstWhere((d) => d != null);
-```
+| Methods |Description|
+|--------|-----|
+| Future<Map<String, double>> | **getLocation()** <br> Allow to get a one time position of the user. |
+| Future\<bool> | **hasPermission()** <br> Return a boolean to know the state of the location permission. |
+| Stream<Map<String, double>> | **onLocationChanged()** <br> Get the stream of the user's location. |
+
 
 ## Feedback
 
